@@ -142,7 +142,7 @@ export default function Home({results}) {
 
 
 export async function getServerSideProps(context) {
-  const results = await fetch('http://localhost:3000/api/readFile')
+  const results = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/readFile`)
   const resultsJson = await results.json()
   return {
     props: {
