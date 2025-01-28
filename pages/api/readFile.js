@@ -1,5 +1,4 @@
-import { rejects } from 'assert'
-import { resolve } from 'path'
+import path from 'path';
 
 const fs = require('fs.promises');
 
@@ -14,7 +13,9 @@ export default async function handler(req, res) {
 
     var dataArray = []
 
-        const result = await fs.readFile(process.cwd() + '/public/data.csv', 'utf8')
+        const filePath = path.join(process.cwd(), 'data', 'data.csv');
+
+        const result = await fs.readFile(filePath, 'utf8')
 
         dataArray = result.split(/\r?\n/);  //Be careful if you are in a \r\n world...
 
