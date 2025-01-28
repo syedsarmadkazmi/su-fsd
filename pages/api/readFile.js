@@ -38,8 +38,6 @@ export default async function handler(req, res) {
             const param1 = removeLeadingZeros(a.split(';')[1])
             const param2 = removeLeadingZeros(b.split(';')[1])
 
-            console.log('param1 ', param1, param2)
-
             if(param1 > param2) {
                 return 1
             }
