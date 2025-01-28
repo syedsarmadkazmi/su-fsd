@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "fs.promises": "^0.1.2",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
