@@ -1,51 +1,61 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { useState } from 'react';
 
-export default function Home() {
+const sortOptions = [
+  {
+    id: 1,
+    title: 'Sort By Created At: ASC',
+    key: 'sortByCreatedAtASC'
+  },
+  {
+    id: 2,
+    title: 'Sort by File Name : ASC',
+    key: 'sortByFileNameASC'
+  },
+  {
+    id: 3,
+    title: 'Sort by File Name : DESC',
+    key: 'sortByFileNameDESC'
+  }
+]
+
+export default function Home({results}) {
+  const [sortOptionIndex, setSortOptionIndex] = useState(0)
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>SU-FSD</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css"></link>
       </Head>
 
       <main>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          SU-FSD
         </h1>
 
-        <p className={styles.description}>
-          Get started by editing <code>pages/index.js</code>
-        </p>
+        {sortOptions.map((item, index) => {
+          return (
+            <>
+              <button key={item?.id} onClick={() => setSortOptionIndex(index)}>{item.title}</button>
+              <br></br>
+            </>
+          )
+        })}
+
+        <h2 className={styles.description}>
+          Displaying results for "{sortOptions[sortOptionIndex].title}"
+        </h2>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          {results?.[sortOptions[sortOptionIndex]?.key].map((item) => {
+            return (
+                <div className={styles.card}>
+                  <p>{item}</p>
+                </div>
+            )
+           })}
         </div>
       </main>
 
@@ -128,4 +138,16 @@ export default function Home() {
       `}</style>
     </div>
   );
+}
+
+
+export async function getServerSideProps(context) {
+  const results = await fetch('http://localhost:3000/api/readFile')
+  const resultsJson = await results.json()
+  return {
+    props: {
+      results: resultsJson
+      // props for your component
+    },
+  };
 }
